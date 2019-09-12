@@ -5,9 +5,9 @@ using System.Windows.Forms;
 
 namespace PasswordGeneratorForms
 {
-    public partial class Form1 : Form
+    public partial class frmPasswordGenerator : Form
     {
-        public Form1()
+        public frmPasswordGenerator()
         {
             InitializeComponent();
         }
@@ -36,24 +36,21 @@ namespace PasswordGeneratorForms
         private const string SPECIAL_CHARS = "!@#$%";
         private void btnGenerate_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < 20; i++)
+            string strPassword = "";
+            //Generate all 4 types
+            for (int j = 0; j < PASSWORD_REQUIREMENTS_LENGTH; j++)
+                strPassword += GenerateRandomCharByType((CharType)j);
+
+            //Generate 2 more random letters
+            for (int j = 0; j < PASSWORD_LENGTH - PASSWORD_REQUIREMENTS_LENGTH; j++)
             {
-                string strPassword = "";
-                //Generate all 4 types
-                for (int j = 0; j < PASSWORD_REQUIREMENTS_LENGTH; j++)
-                    strPassword += GenerateRandomCharByType((CharType)j);
-
-                //Generate 2 more random letters
-                for (int j = 0; j < PASSWORD_LENGTH - PASSWORD_REQUIREMENTS_LENGTH; j++)
-                {
-                    strPassword += GenerateRandomCharByType((CharType)rndRandomGenerator.Next(0, 4));
-                }
-
-                //Randomize the order of all the alphanumeric characters in the password
-                strPassword = string.Join("", strPassword.OrderBy(x => rndRandomGenerator.Next(strPassword.Length)));
-                //Show the password to the user
-                lblPassword.Text = "Your pasword is: " + strPassword;
+                strPassword += GenerateRandomCharByType((CharType)rndRandomGenerator.Next(0, 4));
             }
+
+            //Randomize the order of all the alphanumeric characters in the password
+            strPassword = string.Join("", strPassword.OrderBy(x => rndRandomGenerator.Next(strPassword.Length)));
+            //Show the password to the user
+            lblPassword.Text = "Your password is: " + strPassword;
         }
 
         //This function takes in the type of the character taht you want and returns a random character from that pool of characters
@@ -73,6 +70,12 @@ namespace PasswordGeneratorForms
                     //This should never happen, but just in case.
                     return ' ';
             }
+        }
+
+        private void lblPassword_Click(object sender, EventArgs e)
+        {
+            //Copy the password to the clipboard. The password starts a space after the colon in the lblPassword label, so I used the substring function to fix that.
+            Clipboard.SetText(lblPassword.Text.Substring(lblPassword.Text.IndexOf(':') + 1));
         }
     }
 }
