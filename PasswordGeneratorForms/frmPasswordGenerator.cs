@@ -53,7 +53,7 @@ namespace PasswordGeneratorForms
             lblPassword.Text = "Your password is: " + strPassword;
         }
 
-        //This function takes in the type of the character taht you want and returns a random character from that pool of characters
+        //This function takes in the type of the character that you want and returns a random character from that pool of characters
         private static char GenerateRandomCharByType(CharType type)
         {
             switch (type)
